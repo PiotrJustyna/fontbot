@@ -1,21 +1,17 @@
-{-# LANGUAGE OverloadedStrings #-}
-
 module Lib
-    ( greet
+    ( tweet
     ) where
 
-import qualified Data.ByteString.Char8 as S8
-import qualified Network.HTTP.Simple as Conduit
-import qualified Data.Yaml as Yaml
-import Data.Aeson (Value)
-import Data.ByteString.Char8 (pack)
-import System.IO
+import TwitterUtilities
 
-greet :: IO ()
-greet = do
-  handle <- openFile "c:\\temp\\fontbotauth.txt" ReadMode
-  contents <- hGetContents handle
-  let request = Conduit.setRequestHeader "Authorization" [pack contents] "POST https://api.twitter.com/1.1/statuses/update.json?status=Hello%20World%20From%20Haskell%20with%20OAuth%20header%20value%20taken%20from%20external%20file%21"
-  response <- Conduit.httpJSON request
-  S8.putStrLn $ Yaml.encode (Conduit.getResponseBody response :: Value)
-  hClose handle
+import qualified Data.ByteString.Char8 as S8
+import qualified Data.Text as Text
+import qualified Data.Yaml as Yaml
+import Web.Twitter.Conduit
+
+tweet :: IO ()
+tweet = do
+  twitterInfo <- getTwitterInfoFromEnvironment
+  manager <- newManager tlsManagerSettings
+  result <- call twitterInfo manager $ update $ Text.pack "Hello World from Haskell using twitter-conduit!\nhttps://github.com/himura/twitter-conduit"
+  S8.putStrLn $ Yaml.encode result
