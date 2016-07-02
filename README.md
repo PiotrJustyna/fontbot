@@ -4,6 +4,12 @@ Choose word, choose font, tweet.
 
 # log
 
+## 2016-07-01
+
+Once the POC tweeting mechanism was ready, I decided not to reinvent the wheel going further and to use the twitter-conduit.
+
+[Sample Tweet](https://twitter.com/HaskellFontbot/status/748962791961296896)
+
 ## 2016-06-28
 
 Fontbot can now tweet using manually prepared OAuth signature read from external file.
