@@ -22,6 +22,8 @@ library
                      , yaml
                      , twitter-conduit
                      , text
+                     , lens
+                     , twitter-types
   default-language:    Haskell2010
 
 executable fontbot-exe

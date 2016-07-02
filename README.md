@@ -4,6 +4,26 @@ Choose word, choose font, tweet.
 
 # log
 
+## 2016-07-02
+
+Fontbot can now read and process twitter search results:
+
+```bash
+$ stack exec fontbot-exe
+search metadata:
+- query: "Haskell"
+status:
+"RT @notsleeeping: @TVG American Freedom looked good! Baffert might have his Haskell horse, going for #9, &amp; for 6 wins in the last 7 Haskell\8230"
+---
+status:
+"RT @Steve_Byk: @DRFHersh @EaSyGoEr53 As of tonight, Baffert leaning American Freedom to Haskell, Arrogate toward Travers."
+---
+status:
+"Vintage Miriam Haskell signed double chain necklace Russian gold gilt pendant  https://t.co/Pxrt595goI https://t.co/q6VyXN9XCW"
+---
+
+```
+
 ## 2016-07-01
 
 Once the POC tweeting mechanism was ready, I decided not to reinvent the wheel going further and to use the twitter-conduit.
