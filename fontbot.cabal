@@ -24,6 +24,9 @@ library
                      , text
                      , lens
                      , twitter-types
+                     , Rasterific
+                     , JuicyPixels
+                     , FontyFruity
   default-language:    Haskell2010
 
 executable fontbot-exe
