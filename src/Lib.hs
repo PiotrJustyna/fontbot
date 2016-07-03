@@ -21,7 +21,7 @@ import Web.Twitter.Types
 
 createPDF :: IO ()
 createPDF = do
-  fontErr <- loadFontFile "C:\\Windows\\Fonts\\segoeui.ttf"
+  fontErr <- loadFontFile ".\\fonts\\LearningCurve_OT.ttf"
   case fontErr of
     Left err -> putStrLn err
     Right font ->
