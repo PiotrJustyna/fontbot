@@ -4,6 +4,12 @@ Choose word, choose font, tweet.
 
 # log
 
+## 2016-07-03
+
+Fontbot can now render text to images.
+
+![Haskell](https://raw.githubusercontent.com/PiotrJustyna/fontbot/d93946282962ddd15813bc6ae4cdf878473e4147/font_preview.png)
+
 ## 2016-07-02
 
 Fontbot can now read and process twitter search results:
