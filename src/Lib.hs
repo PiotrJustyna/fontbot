@@ -2,8 +2,9 @@
 
 module Lib
     ( tweet
+    , tweetWithMedia
     , printLatestHaskellTweets
-    , createPDF
+    , createFontPreview
     ) where
 
 import TwitterUtilities
@@ -15,21 +16,9 @@ import Codec.Picture (PixelRGBA8(..), writePng)
 import Control.Lens
 import Graphics.Rasterific
 import Graphics.Rasterific.Texture
-import Graphics.Text.TrueType (loadFontFile )
+import Graphics.Text.TrueType (loadFontFile)
 import Web.Twitter.Conduit
 import Web.Twitter.Types
-
-createPDF :: IO ()
-createPDF = do
-  fontErr <- loadFontFile ".\\fonts\\LearningCurve_OT.ttf"
-  case fontErr of
-    Left err -> putStrLn err
-    Right font ->
-      writePng "font_preview.png" .
-          renderDrawing 300 70 (PixelRGBA8 255 255 255 255)
-              . withTexture (uniformTexture $ PixelRGBA8 0 0 0 255) $
-                      printTextAt font (PointSize 30) (V2 20 50)
-                           "Haskell"
 
 tweet :: IO ()
 tweet = do
@@ -37,6 +26,14 @@ tweet = do
   twitterInfo <- getTwitterInfoFromEnvironment
   manager <- newManager tlsManagerSettings
   result <- call twitterInfo manager $ update status
+  S8.putStrLn $ Yaml.encode result
+
+tweetWithMedia :: IO ()
+tweetWithMedia = do
+  let status = Text.pack "Hello World with media!"
+  twitterInfo <- getTwitterInfoFromEnvironment
+  manager <- newManager tlsManagerSettings
+  result <- call twitterInfo manager $ updateWithMedia status (MediaFromFile ".\\font_preview.png")
   S8.putStrLn $ Yaml.encode result
 
 printLatestHaskellTweets :: IO ()
@@ -84,3 +81,15 @@ parseStatus
     searchStatusSource
     searchStatusUser
     searchStatusCoordinates) = show searchStatusText
+
+createFontPreview :: IO ()
+createFontPreview = do
+  fontErr <- loadFontFile ".\\fonts\\Quicksand_Dash.ttf"
+  case fontErr of
+    Left err -> putStrLn err
+    Right font ->
+      writePng "font_preview.png" .
+          renderDrawing 1000 500 (PixelRGBA8 255 255 255 255)
+              . withTexture (uniformTexture $ PixelRGBA8 0 0 0 255) $
+                      printTextAt font (PointSize 160) (V2 50 400)
+                           "Haskell"
