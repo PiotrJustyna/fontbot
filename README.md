@@ -4,6 +4,30 @@ Choose word, choose font, tweet.
 
 # log
 
+## 2016-07-05
+
+Playing with regular expressions:
+
+```bash
+search metadata:
+- query: "Haskell"
+raw status:
+"Win a copy of James Haskell: RugbyFit https://t.co/rh3q5CiXgG"
+filtered status:
+James
+---
+raw status:
+"The recent watercolor paintings of Ann Jones will be on display at the Hall Haskell House Gallery in Ipswich. .... https://t.co/Vd1E6HG7y6"
+filtered status:
+paintings
+---
+raw status:
+"RT @joshuaclayton: Three months into learning #haskell with @haskellbook! Wrote up how to refactor to a monad transformer stack: https://t.\8230"
+filtered status:
+months
+---
+```
+
 ## 2016-07-03
 
 Fontbot can now render text to images.

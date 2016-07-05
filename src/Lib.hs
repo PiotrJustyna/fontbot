@@ -17,6 +17,7 @@ import Control.Lens
 import Graphics.Rasterific
 import Graphics.Rasterific.Texture
 import Graphics.Text.TrueType (loadFontFile)
+import Text.Regex.Posix
 import Web.Twitter.Conduit
 import Web.Twitter.Types
 
@@ -30,7 +31,7 @@ tweet = do
 
 tweetWithMedia :: IO ()
 tweetWithMedia = do
-  let status = Text.pack "Hello World with media!"
+  let status = Text.pack ""
   twitterInfo <- getTwitterInfoFromEnvironment
   manager <- newManager tlsManagerSettings
   result <- call twitterInfo manager $ updateWithMedia status (MediaFromFile ".\\font_preview.png")
@@ -67,8 +68,10 @@ parseMetadata
 parseStatuses :: [SearchStatus] -> IO ()
 parseStatuses [] = do return ()
 parseStatuses (x:xs) = do
-  putStrLn "status:"
+  putStrLn "raw status:"
   putStrLn $ (parseStatus x)
+  putStrLn "filtered status:"
+  putStrLn $ (parseStatus x) =~ ("[a-zA-Z]{3,20}\\s+" :: String)
   putStrLn "---"
   parseStatuses xs
 
@@ -84,12 +87,12 @@ parseStatus
 
 createFontPreview :: IO ()
 createFontPreview = do
-  fontErr <- loadFontFile ".\\fonts\\Quicksand_Dash.ttf"
+  fontErr <- loadFontFile ".\\fonts\\Cantarell-Regular.ttf"
   case fontErr of
     Left err -> putStrLn err
     Right font ->
       writePng "font_preview.png" .
-          renderDrawing 1000 500 (PixelRGBA8 255 255 255 255)
+          renderDrawing 1000 300 (PixelRGBA8 255 255 255 255)
               . withTexture (uniformTexture $ PixelRGBA8 0 0 0 255) $
-                      printTextAt font (PointSize 160) (V2 50 400)
-                           "Haskell"
+                      printTextAt font (PointSize 100) (V2 100 200)
+                           "paintings"
