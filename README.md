@@ -4,6 +4,12 @@ Choose word, choose font, tweet.
 
 # log
 
+## 2017-07-06
+
+I added more fonts and think I'm finally happy with the media size and text positioning:
+
+![haskell](https://raw.githubusercontent.com/PiotrJustyna/fontbot/5e8aea2a14ec279bfd47714b0884db4e1ae9a3c7/font_preview.png)
+
 ## 2016-07-05
 
 Playing with regular expressions:
