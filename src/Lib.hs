@@ -71,7 +71,7 @@ parseStatuses (x:xs) = do
   putStrLn "raw status:"
   putStrLn $ (parseStatus x)
   putStrLn "filtered status:"
-  putStrLn $ (parseStatus x) =~ ("[a-zA-Z]{3,20}\\s+" :: String)
+  putStrLn $ (parseStatus x) =~ ("[a-zA-Z]{3,10}\\s+" :: String)
   putStrLn "---"
   parseStatuses xs
 
@@ -87,12 +87,12 @@ parseStatus
 
 createFontPreview :: IO ()
 createFontPreview = do
-  fontErr <- loadFontFile ".\\fonts\\Cantarell-Regular.ttf"
+  fontErr <- loadFontFile ".\\fonts\\AlexBrush-Regular.ttf"
   case fontErr of
     Left err -> putStrLn err
     Right font ->
       writePng "font_preview.png" .
-          renderDrawing 1000 300 (PixelRGBA8 255 255 255 255)
+          renderDrawing 1024 512 (PixelRGBA8 255 255 255 255)
               . withTexture (uniformTexture $ PixelRGBA8 0 0 0 255) $
-                      printTextAt font (PointSize 100) (V2 100 200)
-                           "paintings"
+                      printTextAt font (PointSize 100) (V2 150 300)
+                           "resonates"
