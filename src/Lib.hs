@@ -42,7 +42,7 @@ printLatestHaskellTweets = do
   let phrase = Text.pack "Haskell"
   twitterInfo <- getTwitterInfoFromEnvironment
   manager <- newManager tlsManagerSettings
-  result <- call twitterInfo manager $ searchTweets "Haskell" & lang ?~ "en" & count ?~ 3
+  result <- call twitterInfo manager $ searchTweets "Haskell" & lang ?~ "en" & count ?~ 10
   parseResult result
 
 parseResult :: SearchResult [SearchStatus] -> IO ()
@@ -68,15 +68,15 @@ parseMetadata
 parseStatuses :: [SearchStatus] -> IO ()
 parseStatuses [] = do return ()
 parseStatuses (x:xs) = do
-  putStrLn "raw status:"
-  putStrLn $ (parseStatus x)
-  putStrLn "filtered status:"
-  putStrLn $ (parseStatus x) =~ ("[a-zA-Z]{3,10}\\s+" :: String)
-  putStrLn "---"
-  parseStatuses xs
+  let extractedStatus = extractStatus x
+  let firstInterestingWord = extractedStatus =~ ("[ \t\r\n\v\f]+[a-zA-Z]{7,10}[ \t\r\n\v\f!?.,-]+" :: String)
+  putStrLn "status:"
+  putStrLn extractedStatus
+  putStrLn "first interesting word:"
+  if firstInterestingWord == "" then (parseStatuses xs) else (putStrLn firstInterestingWord)
 
-parseStatus :: SearchStatus -> String
-parseStatus
+extractStatus :: SearchStatus -> String
+extractStatus
   (SearchStatus
     searchStatusCreatedAt
     searchStatusId
@@ -87,7 +87,7 @@ parseStatus
 
 createFontPreview :: IO ()
 createFontPreview = do
-  fontErr <- loadFontFile ".\\fonts\\AlexBrush-Regular.ttf"
+  fontErr <- loadFontFile ".\\fonts\\Exo-Thin.ttf"
   case fontErr of
     Left err -> putStrLn err
     Right font ->

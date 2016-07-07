@@ -4,11 +4,26 @@ Choose word, choose font, tweet.
 
 # log
 
+<<<<<<< 05cfd29798436f629ee957594aadf31145a640c8
 ## 2017-07-06
 
 I added more fonts and think I'm finally happy with the media size and text positioning:
 
 ![haskell](https://raw.githubusercontent.com/PiotrJustyna/fontbot/5e8aea2a14ec279bfd47714b0884db4e1ae9a3c7/font_preview.png)
+=======
+## 2016-07-07
+
+Playing with (very simple) regular expressions and extracting potentially interesting words:
+
+```bash
+search metadata:
+- query: "Haskell"
+status:
+"This must be a canonical choice among isomorphic objects."
+first interesting word:
+ canonical
+```
+>>>>>>> Potentially interesting words and more fonts.
 
 ## 2016-07-05
 
