@@ -2,6 +2,12 @@
 
 Choose word, choose font, tweet. 
 
+![modus operandi](http://g.gravizo.com/g?
+  digraph G {
+    "search for tweets containing given keyword" -> "get first interesting word" -> "render the word using chosen font" -> "tweet the image" -> "search for tweets containing given keyword"
+  }
+)
+
 # log
 
 # 2016-07-09
