@@ -28,6 +28,7 @@ library
                      , JuicyPixels
                      , FontyFruity
                      , regex-posix
+                     , string-conv
   default-language:    Haskell2010
 
 executable fontbot-exe
