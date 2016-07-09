@@ -4,6 +4,21 @@ Choose word, choose font, tweet.
 
 # log
 
+# 2016-07-09
+
+Interesting changes today:
+
+ * slightly changed tweet search keyword - "a" produces much more random results
+ * cleaned up retrieved interesting words
+ * chained the tweet-generating functions together:
+   * tweet retrieval
+   * font preview generation
+   * tweeting
+
+Now, when executed, the fontbot grabs the first interesting word out of a batch of retrieved tweets, generates the image (fixed font) and tweets it.
+
+![timeline](https://raw.githubusercontent.com/PiotrJustyna/fontbot/master/images/2016_07_09.PNG)
+
 ## 2016-07-07
 
 Playing with (very simple) regular expressions and extracting potentially interesting words:
