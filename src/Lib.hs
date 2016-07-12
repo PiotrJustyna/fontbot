@@ -4,7 +4,7 @@ module Lib
     ( tweetWithMedia
     , printLatestHaskellTweets
     , createFontPreview
-    , listFiles
+    , chooseRandomFont
     ) where
 
 import TwitterUtilities
@@ -25,13 +25,12 @@ import Text.Regex.Posix
 import Web.Twitter.Conduit
 import Web.Twitter.Types
 
-listFiles :: IO ()
-listFiles = do
+chooseRandomFont :: IO String
+chooseRandomFont = do
   paths <- getDirectoryContents ".\\fonts\\"
   let foundFonts = filter (isSuffixOf ".ttf") paths
-  putStrLn $ "found " ++ show (length foundFonts) ++ " fonts"
-  randomIndex <- randomRIO (0, length foundFonts)
-  putStrLn $ "randomly chosen font: " ++ (foundFonts !! randomIndex)
+  randomIndex <- randomRIO (0, (length foundFonts) - 1)
+  return $ foundFonts !! randomIndex
 
 tweetWithMedia :: IO ()
 tweetWithMedia = do
@@ -43,7 +42,7 @@ tweetWithMedia = do
 
 printLatestHaskellTweets :: IO ()
 printLatestHaskellTweets = do
-  let phrase = Text.pack "Haskell"
+  let phrase = Text.pack "a"
   twitterInfo <- getTwitterInfoFromEnvironment
   manager <- newManager tlsManagerSettings
   result <- call twitterInfo manager $ searchTweets phrase & lang ?~ "en" & count ?~ 10
@@ -78,7 +77,8 @@ extractStatus
 
 createFontPreview :: String -> IO ()
 createFontPreview textToRender = do
-  fontErr <- loadFontFile ".\\fonts\\Chunkfive.ttf"
+  fontName <- chooseRandomFont
+  fontErr <- loadFontFile $ ".\\fonts\\" ++ fontName
   case fontErr of
     Left err -> putStrLn err
     Right font ->
