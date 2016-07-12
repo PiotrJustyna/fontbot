@@ -10,7 +10,41 @@ Choose word, choose font, tweet.
 
 # log
 
-# 2016-07-09
+## 2016-07-12
+
+Choosing random font:
+
+```bash
+C:\Users\Piotr\Documents\fontbot>stack exec fontbot-exe
+found 33 fonts
+randomly chosen font: Cantarell-Bold.ttf
+
+C:\Users\Piotr\Documents\fontbot>stack exec fontbot-exe
+found 33 fonts
+randomly chosen font: Cantarell-Bold.ttf
+
+C:\Users\Piotr\Documents\fontbot>stack exec fontbot-exe
+found 33 fonts
+randomly chosen font: LearningCurve_OT.ttf
+
+C:\Users\Piotr\Documents\fontbot>stack exec fontbot-exe
+found 33 fonts
+randomly chosen font: Quicksand-Italic.ttf
+
+C:\Users\Piotr\Documents\fontbot>stack exec fontbot-exe
+found 33 fonts
+randomly chosen font: Exo-SemiBold.ttf
+
+C:\Users\Piotr\Documents\fontbot>stack exec fontbot-exe
+found 33 fonts
+randomly chosen font: Quicksand-BoldItalic.ttf
+
+C:\Users\Piotr\Documents\fontbot>stack exec fontbot-exe
+found 33 fonts
+randomly chosen font: Quicksand-Bold.ttf
+```
+
+## 2016-07-09
 
 Interesting changes today:
 
