@@ -4,7 +4,7 @@ Choose word, choose font, tweet.
 
 ![modus operandi](http://g.gravizo.com/g?
   digraph G {
-    "search for tweets containing given keyword" -> "get first interesting word" -> "render the word using chosen font" -> "tweet the image" -> "search for tweets containing given keyword"
+    "search for tweets containing given keyword" -> "get first interesting word" -> "pick random font" -> "render the word using the chosen font" -> "tweet the image" -> "search for tweets containing given keyword"
   }
 )
 
@@ -43,6 +43,10 @@ C:\Users\Piotr\Documents\fontbot>stack exec fontbot-exe
 found 33 fonts
 randomly chosen font: Quicksand-Bold.ttf
 ```
+
+Full process implemented:
+
+![timeline](https://raw.githubusercontent.com/PiotrJustyna/fontbot/master/images/2016_07_12.PNG)
 
 ## 2016-07-09
 
