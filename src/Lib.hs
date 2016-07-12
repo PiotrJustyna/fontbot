@@ -4,6 +4,7 @@ module Lib
     ( tweetWithMedia
     , printLatestHaskellTweets
     , createFontPreview
+    , listFiles
     ) where
 
 import TwitterUtilities
@@ -13,13 +14,24 @@ import qualified Data.Text as Text
 import qualified Data.Yaml as Yaml
 import Codec.Picture (PixelRGBA8(..), writePng)
 import Control.Lens
+import Data.List
 import Data.String.Conv
 import Graphics.Rasterific
 import Graphics.Rasterific.Texture
 import Graphics.Text.TrueType (loadFontFile)
+import System.Directory
+import System.Random
 import Text.Regex.Posix
 import Web.Twitter.Conduit
 import Web.Twitter.Types
+
+listFiles :: IO ()
+listFiles = do
+  paths <- getDirectoryContents ".\\fonts\\"
+  let foundFonts = filter (isSuffixOf ".ttf") paths
+  putStrLn $ "found " ++ show (length foundFonts) ++ " fonts"
+  randomIndex <- randomRIO (0, length foundFonts)
+  putStrLn $ "randomly chosen font: " ++ (foundFonts !! randomIndex)
 
 tweetWithMedia :: IO ()
 tweetWithMedia = do
@@ -34,7 +46,7 @@ printLatestHaskellTweets = do
   let phrase = Text.pack "Haskell"
   twitterInfo <- getTwitterInfoFromEnvironment
   manager <- newManager tlsManagerSettings
-  result <- call twitterInfo manager $ searchTweets "a" & lang ?~ "en" & count ?~ 10
+  result <- call twitterInfo manager $ searchTweets phrase & lang ?~ "en" & count ?~ 10
   parseResult result
 
 parseResult :: SearchResult [SearchStatus] -> IO ()

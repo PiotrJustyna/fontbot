@@ -29,6 +29,8 @@ library
                      , FontyFruity
                      , regex-posix
                      , string-conv
+                     , directory
+                     , random
   default-language:    Haskell2010
 
 executable fontbot-exe
