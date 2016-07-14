@@ -49,8 +49,7 @@ printLatestHaskellTweets = do
   parseResult result
 
 parseResult :: SearchResult [SearchStatus] -> IO ()
-parseResult (SearchResult statuses metadata) = do
-  parseStatuses statuses
+parseResult (SearchResult statuses metadata) = parseStatuses statuses
 
 parseStatuses :: [SearchStatus] -> IO ()
 parseStatuses [] = do return ()
@@ -60,7 +59,7 @@ parseStatuses (x:xs) = do
   let firstInterestingWord = extractedStatus =~ expression
   let strippedFirstInterestingWord = toS . Text.strip $ Text.pack firstInterestingWord
   putStrLn $ "status:\n\n" ++ extractedStatus ++ "\n\nfirst interesting word:"
-  if firstInterestingWord == "" then (parseStatuses xs) else do
+  if strippedFirstInterestingWord == "" then (parseStatuses xs) else do
     putStrLn strippedFirstInterestingWord
     createFontPreview strippedFirstInterestingWord
     tweetWithMedia
