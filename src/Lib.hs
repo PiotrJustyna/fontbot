@@ -25,6 +25,8 @@ import Text.Regex.Posix
 import Web.Twitter.Conduit
 import Web.Twitter.Types
 
+fontPreviewPath = "font_preview.png"
+
 chooseRandomFont :: IO String
 chooseRandomFont = do
   paths <- getDirectoryContents ".\\fonts\\"
@@ -58,31 +60,30 @@ parseStatuses (x:xs) = do
   let extractedStatus = extractStatus x
   let firstInterestingWord = extractedStatus =~ expression
   let strippedFirstInterestingWord = toS . Text.strip $ Text.pack firstInterestingWord
-  putStrLn $ "status:\n\n" ++ extractedStatus ++ "\n\nfirst interesting word:"
   if strippedFirstInterestingWord == "" then (parseStatuses xs) else do
-    putStrLn strippedFirstInterestingWord
     createFontPreview strippedFirstInterestingWord
-    tweetWithMedia
+    fontPreviewResult <- doesFileExist fontPreviewPath
+    if (fontPreviewResult)
+      then tweetWithMedia
+      else putStrLn "Cannot tweet - did not find font preview file."
 
 extractStatus :: SearchStatus -> String
-extractStatus
-  (SearchStatus
-    searchStatusCreatedAt
-    searchStatusId
-    searchStatusText
-    searchStatusSource
-    searchStatusUser
-    searchStatusCoordinates) = show searchStatusText
+extractStatus (SearchStatus searchStatusCreatedAt searchStatusId searchStatusText searchStatusSource searchStatusUser searchStatusCoordinates) = toS searchStatusText
 
 createFontPreview :: String -> IO ()
 createFontPreview textToRender = do
   fontName <- chooseRandomFont
-  fontErr <- loadFontFile $ ".\\fonts\\" ++ fontName
-  case fontErr of
-    Left err -> putStrLn err
+  fontLoadResult <- loadFontFile $ ".\\fonts\\" ++ fontName
+  case fontLoadResult of
+    Left errorDescription -> do
+      isFileFound <- doesFileExist fontPreviewPath
+      if (isFileFound)
+        then do
+          removeFile fontPreviewPath
+          putStrLn ("Cannot load font \"" ++ fontName ++ "\". Reason: " ++ errorDescription)
+        else putStrLn "Cannot delete - dit not find font preview file."
     Right font ->
       writePng "font_preview.png" .
-          renderDrawing 1024 512 (PixelRGBA8 255 255 255 255)
-              . withTexture (uniformTexture $ PixelRGBA8 0 0 0 255) $
-                      printTextAt font (PointSize 100) (V2 150 300)
-                           textToRender
+      renderDrawing 1024 512 (PixelRGBA8 255 255 255 255) .
+      withTexture (uniformTexture $ PixelRGBA8 0 0 0 255) $
+      printTextAt font (PointSize 100) (V2 150 300) textToRender
