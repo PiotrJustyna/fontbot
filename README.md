@@ -2,13 +2,9 @@
 
 Choose word, choose font, tweet. 
 
-![modus operandi](http://g.gravizo.com/g?
-  digraph G {
-    "take last 10 random tweets" -> "get first interesting word" -> "pick random font" -> "render the word using the chosen font" -> "tweet the image" -> "take last 10 random tweets"
-  }
-)
-
-![example](https://raw.githubusercontent.com/PiotrJustyna/fontbot/master/images/2016_07_12.PNG)
+| Algorithm | Example |
+| --- | --- |
+| ![modus operandi](http://g.gravizo.com/g?digraph G { "take last 10 random tweets" -> "get first interesting word" -> "pick random font" -> "render the word using the chosen font" -> "tweet the image" -> "take last 10 random tweets" }) | ![example](https://raw.githubusercontent.com/PiotrJustyna/fontbot/master/images/2016_07_12.PNG) |
 
 # log
 
