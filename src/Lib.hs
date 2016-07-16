@@ -61,7 +61,8 @@ parseStatuses (x:xs) = do
   let firstInterestingWord = extractedStatus =~ expression
   let strippedFirstInterestingWord = toS . Text.strip $ Text.pack firstInterestingWord
   if strippedFirstInterestingWord == "" then (parseStatuses xs) else do
-    createFontPreview strippedFirstInterestingWord
+    fontName <- chooseRandomFont
+    createFontPreview strippedFirstInterestingWord fontName
     fontPreviewResult <- doesFileExist fontPreviewPath
     if (fontPreviewResult)
       then tweetWithMedia
@@ -70,9 +71,8 @@ parseStatuses (x:xs) = do
 extractStatus :: SearchStatus -> String
 extractStatus (SearchStatus searchStatusCreatedAt searchStatusId searchStatusText searchStatusSource searchStatusUser searchStatusCoordinates) = toS searchStatusText
 
-createFontPreview :: String -> IO ()
-createFontPreview textToRender = do
-  fontName <- chooseRandomFont
+createFontPreview :: String -> String -> IO ()
+createFontPreview textToRender fontName = do
   fontLoadResult <- loadFontFile $ ".\\fonts\\" ++ fontName
   case fontLoadResult of
     Left errorDescription -> do
@@ -83,7 +83,7 @@ createFontPreview textToRender = do
           putStrLn ("Cannot load font \"" ++ fontName ++ "\". Reason: " ++ errorDescription)
         else putStrLn "Cannot delete - dit not find font preview file."
     Right font ->
-      writePng "font_preview.png" .
+      writePng fontPreviewPath .
       renderDrawing 1024 512 (PixelRGBA8 255 255 255 255) .
       withTexture (uniformTexture $ PixelRGBA8 0 0 0 255) $
       printTextAt font (PointSize 100) (V2 150 300) textToRender
