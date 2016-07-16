@@ -8,7 +8,15 @@ Choose word, choose font, tweet.
   }
 )
 
+![example](https://raw.githubusercontent.com/PiotrJustyna/fontbot/master/images/2016_07_12.PNG)
+
 # log
+
+## 2016-07-16
+
+Closed all remaining issues, fontbot is ready to deploy.
+
+![final result](https://raw.githubusercontent.com/PiotrJustyna/fontbot/master/images/2016_07_16.PNG)
 
 ## 2016-07-12
 
