@@ -7,11 +7,12 @@ module Lib
 import TwitterUtilities
 
 import qualified Data.ByteString.Char8 as S8
+import qualified Data.List as List
+import qualified Data.List.Utils as List.Utils
 import qualified Data.Text as Text
 import qualified Data.Yaml as Yaml
 import Codec.Picture (PixelRGBA8(..), writePng)
 import Control.Lens
-import Data.List
 import Data.String.Conv
 import Graphics.Rasterific
 import Graphics.Rasterific.Texture
@@ -38,7 +39,7 @@ workYourMagic = do
       createFontPreview interestingWord fontName
       fontPreviewResult <- doesFileExist fontPreviewPath
       if fontPreviewResult
-        then tweetWithMedia
+        then tweetWithMedia (clearUpFontName fontName)
         else putStrLn "Cannot tweet - did not find font preview file."
 
 chooseFirstInterestingWordFromSearchResult :: SearchResult [SearchStatus] -> String
@@ -59,9 +60,17 @@ chooseFirstInterestingWordFromSearchStatuses (x:xs) =
 chooseRandomFont :: IO String
 chooseRandomFont = do
   paths <- getDirectoryContents ".\\fonts\\"
-  let foundFonts = filter (isSuffixOf ".ttf") paths
+  let foundFonts = filter (List.isSuffixOf ".ttf") paths
   randomIndex <- randomRIO (0, (length foundFonts) - 1)
   return $ foundFonts !! randomIndex
+
+clearUpFontName :: String -> String
+clearUpFontName fontName =
+  List.Utils.replace ".ttf" "" (List.map characterReplace fontName)
+  where
+    characterReplace '-' = ' '
+    characterReplace '_' = ' '
+    characterReplace character = character
 
 createFontPreview :: String -> String -> IO ()
 createFontPreview textToRender fontName = do
@@ -80,9 +89,9 @@ createFontPreview textToRender fontName = do
       withTexture (uniformTexture $ PixelRGBA8 0 0 0 255) $
       printTextAt font (PointSize 100) (V2 150 300) textToRender
 
-tweetWithMedia :: IO ()
-tweetWithMedia = do
-  let status = Text.pack ""
+tweetWithMedia :: String -> IO ()
+tweetWithMedia fontName = do
+  let status = Text.pack $ "Font: " ++ fontName ++ "."
   twitterInfo <- getTwitterInfoFromEnvironment
   manager <- newManager tlsManagerSettings
   status <- call twitterInfo manager $ updateWithMedia status (MediaFromFile fontPreviewPath)
