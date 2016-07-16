@@ -52,12 +52,9 @@ chooseFirstInterestingWordFromSearchStatuses (x:xs) =
     else strippedFirstInterestingWord
   where
     expression = "[ \t\r\n\v\f]+[a-zA-Z]{7,10}[ \t\r\n\v\f]+" :: String
-    extractedStatus = extractStatus x
+    extractedStatus = extractStatusText x
     firstInterestingWord = extractedStatus =~ expression
     strippedFirstInterestingWord = toS . Text.strip $ Text.pack firstInterestingWord
-
-extractStatus :: SearchStatus -> String
-extractStatus (SearchStatus searchStatusCreatedAt searchStatusId searchStatusText searchStatusSource searchStatusUser searchStatusCoordinates) = toS searchStatusText
 
 chooseRandomFont :: IO String
 chooseRandomFont = do
@@ -88,5 +85,5 @@ tweetWithMedia = do
   let status = Text.pack ""
   twitterInfo <- getTwitterInfoFromEnvironment
   manager <- newManager tlsManagerSettings
-  result <- call twitterInfo manager $ updateWithMedia status (MediaFromFile fontPreviewPath)
-  S8.putStrLn $ Yaml.encode result
+  status <- call twitterInfo manager $ updateWithMedia status (MediaFromFile fontPreviewPath)
+  putStrLn $ extractTweetWithMediaSummary status
