@@ -39,7 +39,7 @@ workYourMagic = do
       createFontPreview interestingWord fontName
       fontPreviewResult <- doesFileExist fontPreviewPath
       if fontPreviewResult
-        then tweetWithMedia (clearUpFontName fontName)
+        then tweetWithMedia (clearUpFontName fontName) interestingWord
         else putStrLn "Cannot tweet - did not find font preview file."
 
 chooseFirstInterestingWordFromSearchResult :: SearchResult [SearchStatus] -> String
@@ -87,11 +87,11 @@ createFontPreview textToRender fontName = do
       writePng fontPreviewPath .
       renderDrawing 1024 512 (PixelRGBA8 255 255 255 255) .
       withTexture (uniformTexture $ PixelRGBA8 0 0 0 255) $
-      printTextAt font (PointSize 100) (V2 150 300) textToRender
+      printTextAt font (PointSize 80) (V2 150 300) textToRender
 
-tweetWithMedia :: String -> IO ()
-tweetWithMedia fontName = do
-  let status = Text.pack $ "Font: " ++ fontName ++ "."
+tweetWithMedia :: String -> String -> IO ()
+tweetWithMedia fontName tweetedWord = do
+  let status = Text.pack $ "Font: " ++ fontName ++ "." ++ " #" ++ tweetedWord
   twitterInfo <- getTwitterInfoFromEnvironment
   manager <- newManager tlsManagerSettings
   status <- call twitterInfo manager $ updateWithMedia status (MediaFromFile fontPreviewPath)
